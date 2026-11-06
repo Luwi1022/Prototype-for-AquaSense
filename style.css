@@ -1,0 +1,43 @@
+/*
+  AquaSense Custom Stylesheet
+
+  The website uses Tailwind CSS utility classes
+  through the CDN included in index.html.
+*/
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+canvas {
+    max-width: 100%;
+}
+
+/* Additional custom styling */
+
+.tab-content {
+    width: 100%;
+}
+
+.tab-btn {
+    transition: all 0.2s ease-in-out;
+}
+
+button {
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}

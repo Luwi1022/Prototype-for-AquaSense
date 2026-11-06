@@ -3,325 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AquaSense - Smart Bangus Pond Monitoring & Decision-Support System</title>
-    <!-- Tailwind CSS CDN -->
+    <title>AquaSense - Smart Bangus Pond Monitoring</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
+
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
 
-    <!-- Top Navigation Header -->
-    <header class="bg-cyan-900 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
-            <div class="flex items-center space-x-3 mb-2 md:mb-0">
-                <div class="bg-cyan-700 p-2.5 rounded-lg text-cyan-200">
-                    <i class="fa-solid fa-water text-2xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-wide">AquaSense</h1>
-                    <p class="text-xs text-cyan-200">Smart Bangus Pond Monitoring & Decision-Support System (Naic, Cavite)</p>
-                </div>
+<header class="bg-cyan-900 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center space-x-3 mb-2 md:mb-0">
+            <div class="bg-cyan-700 p-2.5 rounded-lg text-cyan-200">
+                <i class="fa-solid fa-water text-2xl"></i>
             </div>
-            <div class="flex items-center space-x-4 text-sm">
-                <span class="flex items-center bg-cyan-800 px-3 py-1.5 rounded-full border border-cyan-700">
-                    <span class="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse mr-2"></span>
-                    ESP32 Microcontroller: <strong class="ml-1 text-emerald-300">Connected</strong>
-                </span>
-                <span id="current-time" class="text-cyan-200 hidden sm:inline"></span>
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">AquaSense</h1>
+                <p class="text-xs text-cyan-200">Smart Bangus Pond Monitoring & Decision-Support System (Naic, Cavite)</p>
             </div>
         </div>
-    </header>
 
-    <!-- Navigation Tabs -->
-    <nav class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-20">
-        <div class="max-w-7xl mx-auto px-4 flex space-x-2 overflow-x-auto">
-            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn py-3 px-4 border-b-2 font-medium text-sm flex items-center space-x-2 border-cyan-600 text-cyan-700 whitespace-nowrap">
-                <i class="fa-solid fa-gauge"></i> <span>Water Quality Dashboard</span>
-            </button>
-            <button onclick="switchTab('feeding')" id="btn-feeding" class="tab-btn py-3 px-4 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 whitespace-nowrap">
-                <i class="fa-solid fa-bowl-food"></i> <span>Feeding Log</span>
-            </button>
-            <button onclick="switchTab('growth')" id="btn-growth" class="tab-btn py-3 px-4 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 whitespace-nowrap">
-                <i class="fa-solid fa-chart-line"></i> <span>Growth Monitoring</span>
-            </button>
-            <button onclick="switchTab('harvest')" id="btn-harvest" class="tab-btn py-3 px-4 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 whitespace-nowrap">
-                <i class="fa-solid fa-clipboard-check"></i> <span>Harvest Planning</span>
+        <div class="flex items-center space-x-4 text-sm">
+            <span class="flex items-center bg-cyan-800 px-3 py-1.5 rounded-full border border-cyan-700">
+                <span class="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse mr-2"></span>
+                ESP32 Microcontroller:
+                <strong class="ml-1 text-emerald-300">Connected</strong>
+            </span>
+            <span id="current-time" class="text-cyan-200 hidden sm:inline"></span>
+        </div>
+    </div>
+</header>
+
+<nav class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-20">
+    <div class="max-w-7xl mx-auto px-4 flex space-x-2 overflow-x-auto">
+
+        <button onclick="switchTab('dashboard')" id="btn-dashboard"
+            class="tab-btn py-3 px-4 border-b-2 font-medium text-sm flex items-center space-x-2 border-cyan-600 text-cyan-700 whitespace-nowrap">
+            <i class="fa-solid fa-gauge"></i>
+            <span>Water Quality Dashboard</span>
+        </button>
+
+        <button onclick="switchTab('feeding')" id="btn-feeding"
+            class="tab-btn py-3 px-4 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 whitespace-nowrap">
+            <i class="fa-solid fa-bowl-food"></i>
+            <span>Feeding Log</span>
+        </button>
+
+        <button onclick="switchTab('growth')" id="btn-growth"
+            class="tab-btn py-3 px-4 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 whitespace-nowrap">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Growth Monitoring</span>
+        </button>
+
+        <button onclick="switchTab('harvest')" id="btn-harvest"
+            class="tab-btn py-3 px-4 border-b-2 font-medium text-sm flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700 whitespace-nowrap">
+            <i class="fa-solid fa-clipboard-check"></i>
+            <span>Harvest Planning</span>
+        </button>
+
+    </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+
+    <!-- DASHBOARD -->
+    <section id="tab-dashboard" class="space-y-6 tab-content">
+
+        <div class="flex justify-between items-center">
+            <div>
+                <h2 class="text-xl font-bold text-slate-800">Real-Time Water Quality Parameters</h2>
+                <p class="text-sm text-slate-500">Live sensor telemetry from brackishwater pond nodes in Naic, Cavite.</p>
+            </div>
+
+            <button onclick="simulateSensorUpdate()"
+                class="bg-cyan-600 hover:bg-cyan-700 text-white text-xs px-3 py-2 rounded-lg shadow transition flex items-center space-x-1">
+                <i class="fa-solid fa-rotate"></i>
+                <span>Simulate Telemetry Ping</span>
             </button>
         </div>
-    </nav>
 
-    <!-- Main Content Wrapper -->
-    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-        <!-- ================= TAB 1: DASHBOARD ================= -->
-        <section id="tab-dashboard" class="space-y-6 tab-content">
-            <div class="flex justify-between items-center">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Water Temperature</p>
+                <h3 id="metric-temp" class="text-3xl font-bold mt-1">29.4</h3>
+                <div class="mt-4 flex justify-between text-xs border-t pt-3">
+                    <span>Unit: °C</span>
+                    <span class="text-emerald-600">Optimal Range</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Water pH Level</p>
+                <h3 id="metric-ph" class="text-3xl font-bold mt-1">8.1</h3>
+                <div class="mt-4 flex justify-between text-xs border-t pt-3">
+                    <span>Unit: pH Scale</span>
+                    <span class="text-emerald-600">Optimal Range</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Turbidity</p>
+                <h3 id="metric-turbidity" class="text-3xl font-bold mt-1">42.5</h3>
+                <div class="mt-4 flex justify-between text-xs border-t pt-3">
+                    <span>Unit: NTU</span>
+                    <span class="text-emerald-600">Clear / Normal</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Salinity</p>
+                <h3 id="metric-salinity" class="text-3xl font-bold mt-1">22.8</h3>
+                <div class="mt-4 flex justify-between text-xs border-t pt-3">
+                    <span>Unit: ppt</span>
+                    <span class="text-emerald-600">Brackish Standard</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-semibold text-slate-700 mb-3">Temperature & Salinity Trends</h3>
+                <div class="h-64">
+                    <canvas id="chartTempSal"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-semibold text-slate-700 mb-3">pH & Turbidity Trends</h3>
+                <div class="h-64">
+                    <canvas id="chartPhTurb"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- FEEDING LOG -->
+    <section id="tab-feeding" class="space-y-6 tab-content hidden">
+
+        <div>
+            <h2 class="text-xl font-bold">Feeding Log Management</h2>
+            <p class="text-sm text-slate-500">Record feeding dates, feed types, and estimated quantities.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
+                <h3 class="font-semibold mb-4 pb-2 border-b">Add Feeding Entry</h3>
+
+                <form id="feeding-form" onsubmit="handleFeedingSubmit(event)" class="space-y-4">
+
+                    <div>
+                        <label class="block text-xs mb-1">Date & Time</label>
+                        <input type="datetime-local" id="feed-date" required
+                            class="w-full border rounded-lg px-3 py-2 text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs mb-1">Feed Type</label>
+                        <select id="feed-type" required class="w-full border rounded-lg px-3 py-2 text-sm">
+                            <option value="Starter Pellet">Starter Pellet</option>
+                            <option value="Grower Pellet">Grower Pellet</option>
+                            <option value="Finisher Pellet">Finisher Pellet</option>
+                            <option value="Natural Feed Supplement">Natural Feed Supplement</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs mb-1">Estimated Quantity (kg)</label>
+                        <input type="number" step="0.1" id="feed-qty" placeholder="e.g. 15.5" required
+                            class="w-full border rounded-lg px-3 py-2 text-sm">
+                    </div>
+
+                    <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 rounded-lg text-sm">
+                        Save Feeding Record
+                    </button>
+
+                </form>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 lg:col-span-2">
+                <h3 class="font-semibold mb-4 pb-2 border-b">Feeding History</h3>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="bg-slate-100 text-xs uppercase">
+                                <th class="p-3">Date & Time</th>
+                                <th class="p-3">Feed Type</th>
+                                <th class="p-3">Quantity (kg)</th>
+                                <th class="p-3 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feeding-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- GROWTH MONITORING -->
+    <section id="tab-growth" class="space-y-6 tab-content hidden">
+
+        <div>
+            <h2 class="text-xl font-bold">Bangus Growth Monitoring</h2>
+            <p class="text-sm text-slate-500">Record periodic sample measurements (weight & length) from pond sampling.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
+                <h3 class="font-semibold mb-4 pb-2 border-b">Add Sample Record</h3>
+
+                <form id="growth-form" onsubmit="handleGrowthSubmit(event)" class="space-y-4">
+
+                    <div>
+                        <label class="block text-xs mb-1">Sampling Date</label>
+                        <input type="date" id="growth-date" required class="w-full border rounded-lg px-3 py-2 text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs mb-1">Number of Fish Sampled</label>
+                        <input type="number" id="growth-count" placeholder="e.g. 30" required class="w-full border rounded-lg px-3 py-2 text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs mb-1">Average Weight (grams)</label>
+                        <input type="number" step="0.1" id="growth-weight" placeholder="e.g. 250.0" required class="w-full border rounded-lg px-3 py-2 text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs mb-1">Average Length (cm)</label>
+                        <input type="number" step="0.1" id="growth-length" placeholder="e.g. 24.5" required class="w-full border rounded-lg px-3 py-2 text-sm">
+                    </div>
+
+                    <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 rounded-lg text-sm">
+                        Save Growth Record
+                    </button>
+
+                </form>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 lg:col-span-2 space-y-6">
+
                 <div>
-                    <h2 class="text-xl font-bold text-slate-800">Real-Time Water Quality Parameters</h2>
-                    <p class="text-sm text-slate-500">Live sensor telemetry from brackishwater pond nodes in Naic, Cavite.</p>
-                </div>
-                <button onclick="simulateSensorUpdate()" class="bg-cyan-600 hover:bg-cyan-700 text-white text-xs px-3 py-2 rounded-lg shadow transition flex items-center space-x-1">
-                    <i class="fa-solid fa-rotate"></i> <span>Simulate Telemetry Ping</span>
-                </button>
-            </div>
+                    <h3 class="font-semibold mb-3">Growth History Records</h3>
 
-            <!-- Metric Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Temperature -->
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Water Temperature</p>
-                            <h3 id="metric-temp" class="text-3xl font-bold text-slate-800 mt-1">29.4</h3>
-                        </div>
-                        <div class="p-3 bg-amber-50 text-amber-600 rounded-lg"><i class="fa-solid fa-temperature-high text-xl"></i></div>
-                    </div>
-                    <div class="mt-4 flex items-center justify-between text-xs text-slate-500 border-t pt-3">
-                        <span>Unit: °C</span>
-                        <span class="text-emerald-600 font-medium bg-emerald-50 px-2 py-0.5 rounded">Optimal Range</span>
-                    </div>
-                </div>
-                <!-- pH -->
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Water pH Level</p>
-                            <h3 id="metric-ph" class="text-3xl font-bold text-slate-800 mt-1">8.1</h3>
-                        </div>
-                        <div class="p-3 bg-blue-50 text-blue-600 rounded-lg"><i class="fa-solid fa-vial text-xl"></i></div>
-                    </div>
-                    <div class="mt-4 flex items-center justify-between text-xs text-slate-500 border-t pt-3">
-                        <span>Unit: pH Scale</span>
-                        <span class="text-emerald-600 font-medium bg-emerald-50 px-2 py-0.5 rounded">Optimal Range</span>
-                    </div>
-                </div>
-                <!-- Turbidity -->
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Turbidity</p>
-                            <h3 id="metric-turbidity" class="text-3xl font-bold text-slate-800 mt-1">42.5</h3>
-                        </div>
-                        <div class="p-3 bg-cyan-50 text-cyan-600 rounded-lg"><i class="fa-solid fa-cloud-sun text-xl"></i></div>
-                    </div>
-                    <div class="mt-4 flex items-center justify-between text-xs text-slate-500 border-t pt-3">
-                        <span>Unit: NTU</span>
-                        <span class="text-emerald-600 font-medium bg-emerald-50 px-2 py-0.5 rounded">Clear / Normal</span>
-                    </div>
-                </div>
-                <!-- Salinity -->
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Salinity</p>
-                            <h3 id="metric-salinity" class="text-3xl font-bold text-slate-800 mt-1">22.8</h3>
-                        </div>
-                        <div class="p-3 bg-teal-50 text-teal-600 rounded-lg"><i class="fa-solid fa-droplet text-xl"></i></div>
-                    </div>
-                    <div class="mt-4 flex items-center justify-between text-xs text-slate-500 border-t pt-3">
-                        <span>Unit: ppt</span>
-                        <span class="text-emerald-600 font-medium bg-emerald-50 px-2 py-0.5 rounded">Brackish Standard</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Charts Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                    <h3 class="text-md font-semibold text-slate-700 mb-3">Temperature & Salinity Trends</h3>
-                    <div class="h-64"><canvas id="chartTempSal"></canvas></div>
-                </div>
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                    <h3 class="text-md font-semibold text-slate-700 mb-3">pH & Turbidity Trends</h3>
-                    <div class="h-64"><canvas id="chartPhTurb"></canvas></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= TAB 2: FEEDING LOG ================= -->
-        <section id="tab-feeding" class="space-y-6 tab-content hidden">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold text-slate-800">Feeding Log Management</h2>
-                    <p class="text-sm text-slate-500">Record feeding dates, feed types, and estimated quantities.</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Feeding Form -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
-                    <h3 class="text-md font-semibold text-slate-700 mb-4 pb-2 border-b">Add Feeding Entry</h3>
-                    <form id="feeding-form" onsubmit="handleFeedingSubmit(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Date & Time</label>
-                            <input type="datetime-local" id="feed-date" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Feed Type</label>
-                            <select id="feed-type" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                                <option value="Starter Pellet">Starter Pellet</option>
-                                <option value="Grower Pellet">Grower Pellet</option>
-                                <option value="Finisher Pellet">Finisher Pellet</option>
-                                <option value="Natural Feed Supplement">Natural Feed Supplement</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Estimated Quantity (kg)</label>
-                            <input type="number" step="0.1" id="feed-qty" placeholder="e.g. 15.5" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                        </div>
-                        <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2 rounded-lg text-sm transition shadow-sm">Save Feeding Record</button>
-                    </form>
-                </div>
-
-                <!-- Feeding Table -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 lg:col-span-2">
-                    <h3 class="text-md font-semibold text-slate-700 mb-4 pb-2 border-b">Feeding History</h3>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse text-sm">
+                        <table class="w-full text-left text-sm">
                             <thead>
-                                <tr class="bg-slate-100 text-slate-600 text-xs uppercase tracking-wider">
-                                    <th class="p-3">Date & Time</th>
-                                    <th class="p-3">Feed Type</th>
-                                    <th class="p-3">Quantity (kg)</th>
+                                <tr class="bg-slate-100 text-xs uppercase">
+                                    <th class="p-3">Date</th>
+                                    <th class="p-3">Sampled</th>
+                                    <th class="p-3">Avg Weight (g)</th>
+                                    <th class="p-3">Avg Length (cm)</th>
                                     <th class="p-3 text-center">Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="feeding-table-body" class="divide-y divide-slate-200">
-                                <!-- Populated dynamically -->
-                            </tbody>
+                            <tbody id="growth-table-body"></tbody>
                         </table>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- ================= TAB 3: GROWTH MONITORING ================= -->
-        <section id="tab-growth" class="space-y-6 tab-content hidden">
-            <div class="flex justify-between items-center">
+                <div class="border-t pt-4">
+                    <h3 class="font-semibold mb-3">Weight Progression Trend</h3>
+                    <div class="h-48">
+                        <canvas id="chartGrowth"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- HARVEST PLANNING -->
+    <section id="tab-harvest" class="space-y-6 tab-content hidden">
+
+        <div>
+            <h2 class="text-xl font-bold">Harvest Planning Decision-Support Panel</h2>
+            <p class="text-sm text-slate-500">Compare latest growth sample records against target market size requirements.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+                <h3 class="font-semibold pb-2 border-b">Target Market Configuration</h3>
+
                 <div>
-                    <h2 class="text-xl font-bold text-slate-800">Bangus Growth Monitoring</h2>
-                    <p class="text-sm text-slate-500">Record periodic sample measurements (weight & length) from pond sampling.</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Growth Form -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
-                    <h3 class="text-md font-semibold text-slate-700 mb-4 pb-2 border-b">Add Sample Record</h3>
-                    <form id="growth-form" onsubmit="handleGrowthSubmit(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Sampling Date</label>
-                            <input type="date" id="growth-date" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Number of Fish Sampled</label>
-                            <input type="number" id="growth-count" placeholder="e.g. 30" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Average Weight (grams)</label>
-                            <input type="number" step="0.1" id="growth-weight" placeholder="e.g. 250.0" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Average Length (cm)</label>
-                            <input type="number" step="0.1" id="growth-length" placeholder="e.g. 24.5" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                        </div>
-                        <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2 rounded-lg text-sm transition shadow-sm">Save Growth Record</button>
-                    </form>
+                    <label class="block text-xs mb-1">Target Market Size (Average Weight in Grams)</label>
+                    <input type="number" id="target-weight-input" value="350"
+                        oninput="updateHarvestPanel()"
+                        class="w-full border rounded-lg px-3 py-2 text-sm">
+                    <p class="text-xs text-slate-400 mt-1">Default benchmark target size for commercial marketable bangus (e.g. 350g–400g).</p>
                 </div>
 
-                <!-- Growth Table & Chart -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 lg:col-span-2 space-y-6">
-                    <div>
-                        <h3 class="text-md font-semibold text-slate-700 mb-3">Growth History Records</h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse text-sm">
-                                <thead>
-                                    <tr class="bg-slate-100 text-slate-600 text-xs uppercase tracking-wider">
-                                        <th class="p-3">Date</th>
-                                        <th class="p-3">Sampled</th>
-                                        <th class="p-3">Avg Weight (g)</th>
-                                        <th class="p-3">Avg Length (cm)</th>
-                                        <th class="p-3 text-center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="growth-table-body" class="divide-y divide-slate-200">
-                                    <!-- Populated dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="border-t pt-4">
-                        <h3 class="text-md font-semibold text-slate-700 mb-3">Weight Progression Trend</h3>
-                        <div class="h-48"><canvas id="chartGrowth"></canvas></div>
+                <div class="bg-cyan-50 border border-cyan-100 rounded-lg p-4 space-y-2">
+                    <h4 class="text-xs font-bold text-cyan-900 uppercase">Latest Recorded Sample Summary</h4>
+
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div>Last Sampling Date: <strong id="summary-date">--</strong></div>
+                        <div>Fish Sampled Count: <strong id="summary-count">--</strong></div>
+                        <div>Latest Avg Weight: <strong id="summary-weight">-- g</strong></div>
+                        <div>Latest Avg Length: <strong id="summary-length">-- cm</strong></div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- ================= TAB 4: HARVEST PLANNING ================= -->
-        <section id="tab-harvest" class="space-y-6 tab-content hidden">
-            <div class="flex justify-between items-center">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
+
                 <div>
-                    <h2 class="text-xl font-bold text-slate-800">Harvest Planning Decision-Support Panel</h2>
-                    <p class="text-sm text-slate-500">Compare latest growth sample records against target market size requirements.</p>
-                </div>
-            </div>
+                    <h3 class="font-semibold pb-2 border-b">Readiness Assessment</h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Target Configuration Card -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
-                    <h3 class="text-md font-semibold text-slate-700 pb-2 border-b">Target Market Configuration</h3>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Target Market Size (Average Weight in Grams)</label>
-                        <input type="number" id="target-weight-input" value="350" oninput="updateHarvestPanel()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                        <p class="text-xs text-slate-400 mt-1">Default benchmark target size for commercial marketable bangus (e.g. 350g–400g).</p>
-                    </div>
-
-                    <div class="bg-cyan-50 border border-cyan-100 rounded-lg p-4 space-y-2">
-                        <h4 class="text-xs font-bold text-cyan-900 uppercase tracking-wide">Latest Recorded Sample Summary</h4>
-                        <div class="grid grid-cols-2 gap-2 text-sm">
-                            <div><span class="text-slate-500">Last Sampling Date:</span> <strong id="summary-date" class="text-slate-800">--</strong></div>
-                            <div><span class="text-slate-500">Fish Sampled Count:</span> <strong id="summary-count" class="text-slate-800">--</strong></div>
-                            <div><span class="text-slate-500">Latest Avg Weight:</span> <strong id="summary-weight" class="text-cyan-700 font-bold">-- g</strong></div>
-                            <div><span class="text-slate-500">Latest Avg Length:</span> <strong id="summary-length" class="text-slate-800">-- cm</strong></div>
+                    <div class="mt-4 text-center p-6 bg-slate-50 rounded-xl border space-y-3">
+                        <div id="status-icon-wrapper" class="inline-flex p-3 rounded-full bg-amber-100 text-amber-600">
+                            <i id="status-icon" class="fa-solid fa-hourglass-half text-2xl"></i>
                         </div>
+
+                        <h4 id="status-title" class="text-lg font-bold">No Growth Records Found</h4>
+
+                        <p id="status-description" class="text-xs text-slate-500 max-w-xs mx-auto">
+                            Please add sample records in the Growth Monitoring tab to enable harvest status evaluation.
+                        </p>
                     </div>
                 </div>
 
-                <!-- Status Evaluation Card -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h3 class="text-md font-semibold text-slate-700 pb-2 border-b">Readiness Assessment</h3>
-                        <div class="mt-4 text-center p-6 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                            <div id="status-icon-wrapper" class="inline-flex p-3 rounded-full bg-amber-100 text-amber-600">
-                                <i id="status-icon" class="fa-solid fa-hourglass-half text-2xl"></i>
-                            </div>
-                            <h4 id="status-title" class="text-lg font-bold text-slate-800">No Growth Records Found</h4>
-                            <p id="status-description" class="text-xs text-slate-500 max-w-xs mx-auto">Please add sample records in the Growth Monitoring tab to enable harvest status evaluation.</p>
-                        </div>
-                    </div>
-
-                    <!-- Disclaimer block -->
-                    <div class="bg-amber-50 border-l-4 border-amber-400 p-3 text-xs text-amber-800 rounded-r">
-                        <p><strong>Note:</strong> This panel serves as an informational review aid. It does not determine an exact harvest date or guarantee production outcomes, which depend on local farm and environmental factors.</p>
-                    </div>
+                <div class="bg-amber-50 border-l-4 border-amber-400 p-3 text-xs text-amber-800 rounded-r">
+                    <p><strong>Note:</strong> This panel serves as an informational review aid. It does not determine an exact harvest date or guarantee production outcomes, which depend on local farm and environmental factors.</p>
                 </div>
+
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
+</main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-4 mt-8 text-center text-xs text-slate-500">
-        <p>AquaSense: A Smart Bangus Pond Monitoring & Decision-Support System &bull; Naic, Cavite</p>
-    </footer>
+<footer class="bg-white border-t border-slate-200 py-4 mt-8 text-center text-xs text-slate-500">
+    <p>AquaSense: A Smart Bangus Pond Monitoring & Decision-Support System &bull; Naic, Cavite</p>
+</footer>
 
-    <!-- External Custom JavaScript -->
-    <script src="app.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
