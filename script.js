@@ -310,20 +310,158 @@ function initCharts() {
 
 
 // ========================================
-// SIMULATE SENSOR UPDATE
+// AUTOMATIC ESP32 SENSOR SIMULATION
 // ========================================
 
-function simulateSensorUpdate() {
+let simulationRunning = false;
+let simulationTimer = null;
 
-    const temp = (28 + Math.random() * 3).toFixed(1);
-    const ph = (7.5 + Math.random() * 0.9).toFixed(1);
-    const turbidity = (38 + Math.random() * 8).toFixed(1);
-    const salinity = (21 + Math.random() * 3).toFixed(1);
+// Initial sensor values
+let sensorValues = {
+    temperature: 29.4,
+    ph: 8.1,
+    turbidity: 42.5,
+    salinity: 22.8
+};
 
-    document.getElementById('metric-temp').innerText = temp;
-    document.getElementById('metric-ph').innerText = ph;
-    document.getElementById('metric-turbidity').innerText = turbidity;
-    document.getElementById('metric-salinity').innerText = salinity;
+// Generate realistic-looking gradual sensor changes
+function generateSensorValue(current, variation, min, max) {
+    const change = (Math.random() - 0.5) * variation;
+
+    return Math.max(
+        min,
+        Math.min(max, current + change)
+    );
+}
+
+
+// Update sensor cards
+function updateSensorCards() {
+
+    document.getElementById('metric-temp').innerText =
+        sensorValues.temperature.toFixed(1);
+
+    document.getElementById('metric-ph').innerText =
+        sensorValues.ph.toFixed(2);
+
+    document.getElementById('metric-turbidity').innerText =
+        sensorValues.turbidity.toFixed(1);
+
+    document.getElementById('metric-salinity').innerText =
+        sensorValues.salinity.toFixed(1);
+}
+
+
+// Update both live graphs
+function updateLiveCharts() {
+
+    if (!chartTempSal || !chartPhTurb) return;
+
+    // Generate new sensor readings
+    sensorValues.temperature = generateSensorValue(
+        sensorValues.temperature, 0.5, 27, 33
+    );
+
+    sensorValues.salinity = generateSensorValue(
+        sensorValues.salinity, 0.3, 18, 30
+    );
+
+    sensorValues.ph = generateSensorValue(
+        sensorValues.ph, 0.12, 7, 9
+    );
+
+    sensorValues.turbidity = generateSensorValue(
+        sensorValues.turbidity, 2, 20, 70
+    );
+
+    // Current timestamp
+    const time = new Date().toLocaleTimeString();
+
+    // Update temperature and salinity graph
+    chartTempSal.data.labels.push(time);
+
+    chartTempSal.data.datasets[0].data.push(
+        Number(sensorValues.temperature.toFixed(1))
+    );
+
+    chartTempSal.data.datasets[1].data.push(
+        Number(sensorValues.salinity.toFixed(1))
+    );
+
+
+    // Update pH and turbidity graph
+    chartPhTurb.data.labels.push(time);
+
+    chartPhTurb.data.datasets[0].data.push(
+        Number(sensorValues.ph.toFixed(2))
+    );
+
+    chartPhTurb.data.datasets[1].data.push(
+        Number(sensorValues.turbidity.toFixed(1))
+    );
+
+
+    // Keep only the latest 20 readings
+    const MAX_POINTS = 20;
+
+    [chartTempSal, chartPhTurb].forEach(chart => {
+
+        while (chart.data.labels.length > MAX_POINTS) {
+
+            chart.data.labels.shift();
+
+            chart.data.datasets.forEach(dataset => {
+                dataset.data.shift();
+            });
+
+        }
+
+        chart.update();
+
+    });
+
+    // Update dashboard metric cards
+    updateSensorCards();
+}
+
+
+// Start automatic graph movement
+function startLiveSimulation() {
+
+    if (simulationRunning) return;
+
+    simulationRunning = true;
+
+    updateLiveCharts();
+
+    simulationTimer = setInterval(() => {
+        updateLiveCharts();
+    }, 2000);
+
+    document.getElementById('simulation-btn').innerText =
+        'Pause Graph';
+}
+
+
+// Pause or resume graph movement
+function toggleSimulation() {
+
+    if (simulationRunning) {
+
+        clearInterval(simulationTimer);
+
+        simulationTimer = null;
+
+        simulationRunning = false;
+
+        document.getElementById('simulation-btn').innerText =
+            'Resume Graph';
+
+    } else {
+
+        startLiveSimulation();
+
+    }
 
 }
 
@@ -653,5 +791,8 @@ window.onload = function() {
     renderFeedingTable();
 
     renderGrowthTable();
+
+    // Start automatic sensor simulation
+    startLiveSimulation();
 
 };
